@@ -9,5 +9,5 @@ export const getRedisClient = () => {
 
 process.on(
   "SIGINT",
-  async () => await Promise.all(connections.map((r) => r.quit()))
+  async () => await Promise.all(connections.map((r) => r.quit().catch()))
 );
