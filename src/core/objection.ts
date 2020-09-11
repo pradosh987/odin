@@ -1,6 +1,7 @@
 import Knex from "knex";
 import { Model } from "objection";
 import { config } from "./config";
+import { logger } from "./logger";
 
 const knex = Knex({
   client: "postgresql",
@@ -18,5 +19,10 @@ const knex = Knex({
   },
 });
 
+if (config.env === "development") {
+  knex.on("query", (data) => {
+    logger.info(data);
+  });
+}
 // Give the knex instance to objection.
 Model.knex(knex);
