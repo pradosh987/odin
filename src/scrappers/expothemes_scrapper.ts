@@ -28,7 +28,7 @@ export class ExpoThemesScrapper extends BaseScrapper {
   }
 
   themeName(): string {
-    return this.metaTitle();
+    return this.document(".article__title--single").text();
   }
 
   wallpapersCount() {
