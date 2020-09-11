@@ -2,6 +2,7 @@ import { BaseModel } from "./base_model";
 import { Model } from "objection";
 import { Website } from "./website";
 import path from "path";
+import { Theme } from "./theme";
 
 export class Url extends BaseModel {
   static tableName = "urls";
@@ -18,6 +19,14 @@ export class Url extends BaseModel {
       join: {
         from: "urls.website_id",
         to: "websites.id",
+      },
+    },
+    theme: {
+      relation: Model.HasOneRelation,
+      modelClass: Theme,
+      join: {
+        from: "urls.id",
+        to: "themes.url_id",
       },
     },
   };
