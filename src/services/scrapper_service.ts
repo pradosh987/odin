@@ -5,6 +5,8 @@ import { Website } from "../models/website";
 import { BaseScrapper } from "../scrappers/base_scrapper";
 import { Theme } from "../models/theme";
 import { raw } from "objection";
+import { addScrappingJob } from "../core/bullmq";
+import * as urlManagerService from "./url_manager_service";
 
 const scrapUrl = async (url: Url, maxDepth = 1) => {
   const completeUrl = await url.completeUrl();
@@ -15,7 +17,6 @@ const scrapUrl = async (url: Url, maxDepth = 1) => {
   if (scrapper.isTheme()) {
     await extractAndSaveTheme(scrapper, url);
   }
-
   if (maxDepth) {
     const internalLinks = scrapper.internalLinks();
     await enqueueInternalLinks(internalLinks, url.website, maxDepth - 1);
@@ -66,8 +67,13 @@ const enqueueInternalLinks = async (
   await Promise.all(newUrlsInDb.map((u) => enqueueUrl(u, website, maxDepth)));
 };
 
-const enqueueUrl = (url: Url, website: Website, maxDepth: number) => {
-  console.log("enqueueUrl", url.path);
+const enqueueUrl = async (url: Url, website: Website, maxDepth: number) => {
+  logger.info("enqueueUrl", url);
+  const uri = new URL(await url.completeUrl());
+  if (!(await urlManagerService.isAlreadyDiscovered(uri))) {
+    await addScrappingJob(url.id, maxDepth);
+    await urlManagerService.addToDiscoveredUrls(uri);
+  }
 };
 
 const scrapWebsite = async (website: Website, maxDepth = 3) =>
