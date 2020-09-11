@@ -13,8 +13,8 @@ export async function up(knex: Knex): Promise<void> {
     t.bigInteger("url_id").notNullable().index();
     t.foreign("url_id").references("urls.id");
     t.string("featured_image_url");
-    t.specificType("image_urls", "INT[]").defaultTo("{}").notNullable();
-    t.boolean("published").notNullable();
+    t.specificType("image_urls", "VARCHAR[]").defaultTo("{}").notNullable();
+    t.boolean("published").notNullable().defaultTo(true);
     t.timestamp("created_at", { useTz: false })
       .notNullable()
       .defaultTo(knex.fn.now());
