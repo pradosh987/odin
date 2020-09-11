@@ -54,7 +54,7 @@ export abstract class BaseScrapper {
         }
         return acc;
       }, [])
-      .filter((url) => url.host === this.url.host)
+      .filter((url) => url.host === this.url.host && url.pathname.length)
       .map((url) => {
         url.protocol = this.url.protocol;
         return url;
