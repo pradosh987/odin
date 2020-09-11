@@ -14,6 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/cheerio": "^0.22.21",
+    "@types/ioredis": "^4.17.4",
     "@types/lodash": "^4.14.161",
     "@types/restify": "^8.4.2",
     "@types/restify-errors": "^4.3.3",
@@ -27,6 +28,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "cheerio": "^1.0.0-rc.3",
+    "ioredis": "^4.17.3",
     "knex": "^0.21.5",
     "lodash": "^4.17.20",
     "objection": "^2.2.3",
