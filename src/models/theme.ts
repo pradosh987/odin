@@ -14,6 +14,7 @@ export class Theme extends BaseModel {
   featuredImageUrl: string | undefined;
   imageUrls: string[];
   url_id: number;
+  url: Url;
 
   static relationMappings = {
     url: {
@@ -21,7 +22,7 @@ export class Theme extends BaseModel {
       modelClass: Url,
       join: {
         from: "themes.url_id",
-        to: "url.id",
+        to: "urls.id",
       },
     },
   };
