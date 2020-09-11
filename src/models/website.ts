@@ -9,6 +9,7 @@ export class Website extends BaseModel {
   name: string;
   url: string;
   active: boolean;
+  homepageId: number;
 
   static relationMappings = {
     urls: {
@@ -20,4 +21,8 @@ export class Website extends BaseModel {
       },
     },
   };
+
+  homepage() {
+    return Url.query().findById(this.homepageId);
+  }
 }

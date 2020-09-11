@@ -70,4 +70,12 @@ const enqueueUrl = (url: Url, website: Website, maxDepth: number) => {
   console.log("enqueueUrl", url.path);
 };
 
-export { scrapUrl };
+const scrapWebsite = async (website: Website, maxDepth = 3) =>
+  enqueueUrl(await website.homepage(), website, maxDepth);
+
+const scrapAllActiveWebsites = async () =>
+  Promise.all(
+    (await Website.query().where({ active: true })).map(scrapWebsite)
+  );
+
+export { scrapUrl, scrapWebsite, scrapAllActiveWebsites };
