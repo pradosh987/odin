@@ -1,6 +1,17 @@
 import _ from "lodash";
 import cheerio from "cheerio";
 import { logger } from "../core/logger";
+import path from "path";
+
+const SKIP_URL_EXTENSIONS = [
+  ".themepack",
+  ".deskthemepack",
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".exe",
+  ".zip",
+];
 
 export abstract class BaseScrapper {
   protected document: CheerioStatic;
@@ -54,7 +65,12 @@ export abstract class BaseScrapper {
         }
         return acc;
       }, [])
-      .filter((url) => url.host === this.url.host && url.pathname.length)
+      .filter(
+        (url) =>
+          url.host === this.url.host &&
+          url.pathname.length &&
+          !SKIP_URL_EXTENSIONS.includes(path.extname(url.pathname))
+      )
       .map((url) => {
         url.protocol = this.url.protocol;
         return url;
