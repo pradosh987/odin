@@ -1,4 +1,4 @@
-import { BaseModel } from "./BaseModel";
+import { BaseModel } from "./base_model";
 
 export class Website extends BaseModel {
   static get tableName() {
