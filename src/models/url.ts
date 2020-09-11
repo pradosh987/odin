@@ -9,7 +9,7 @@ export class Url extends BaseModel {
 
   id: number;
   path: string;
-  website_id: number;
+  websiteId: number;
   website: Website;
 
   static relationMappings = {
@@ -31,7 +31,10 @@ export class Url extends BaseModel {
     },
   };
 
-  completeUrl() {
+  async completeUrl() {
+    if (!this.website) {
+      this.website = await Website.query().findById(this.websiteId);
+    }
     return path.join(this.website.url, this.path);
   }
 }

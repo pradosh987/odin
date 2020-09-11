@@ -7,8 +7,8 @@ import { Theme } from "../models/theme";
 import { raw } from "objection";
 
 const scrapUrl = async (url: Url, maxDepth = 1) => {
-  const completeUrl = url.completeUrl();
-  logger.info(`Scrapping Url ${completeUrl}: ${url}`);
+  const completeUrl = await url.completeUrl();
+  logger.info(`Scrapping Url ${completeUrl}`, url);
   const uri = new URL(completeUrl);
   const scrapper = await buildScrapper(uri);
 
