@@ -1,6 +1,7 @@
 import { createServer, plugins, Server } from "restify";
 import { config } from "./config";
 import { logger } from "./logger";
+import corsMiddleware from "restify-cors-middleware";
 // import { mountRoutes } from "../routes";
 
 const app = createServer();
@@ -39,6 +40,16 @@ app.on(
     printLog: true,
   })
 );
+
+const cors = corsMiddleware({
+  preflightMaxAge: 5, //Optional
+  origins: ["http://localhost:3001"],
+  allowHeaders: ["API-Token"],
+  exposeHeaders: ["API-Token-Expiry"],
+});
+
+app.pre(cors.preflight);
+app.use(cors.actual);
 
 // // Mount routes
 // mountRoutes(app);
