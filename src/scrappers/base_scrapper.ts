@@ -53,11 +53,11 @@ export abstract class BaseScrapper {
       .map((e) => e.toString());
   }
 
-  internalLinks() {
+  internalLinks(): URL[] {
     const links = this.links()
       .reduce((acc: URL[], urlString: string) => {
         try {
-          const url = new URL(urlString);
+          const url = new URL(urlString, this.url.origin);
           url.search = "";
           acc.push(url);
         } catch (e) {
@@ -89,6 +89,10 @@ export abstract class BaseScrapper {
 
   size(): string | undefined {
     return undefined;
+  }
+
+  h1() {
+    return this.document("h1").text();
   }
 
   abstract isTheme(): boolean;
