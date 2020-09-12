@@ -1,6 +1,7 @@
 import { BaseModel } from "./base_model";
 import { Model } from "objection";
 import { Url } from "./url";
+import { Image } from "./Image";
 
 export class Theme extends BaseModel {
   static tableName = "themes";
@@ -23,6 +24,14 @@ export class Theme extends BaseModel {
       join: {
         from: "themes.url_id",
         to: "urls.id",
+      },
+    },
+    images: {
+      relation: Model.HasManyRelation,
+      modelClass: Image,
+      join: {
+        from: "themes.id",
+        to: "images.theme_id",
       },
     },
   };
