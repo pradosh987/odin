@@ -17,14 +17,11 @@ export class ExpoThemesScrapper extends BaseScrapper {
   }
 
   images(): string[] {
-    return this.document("img", "article")
-      .filter((i, img) => {
-        const width = cheerio(img).attr("width");
-        return !!width && Number.parseInt(width) > 500;
-      })
-      .map((i, img) => cheerio(img).attr("src"))
-      .toArray()
-      .map((i) => i.toString());
+    const doc = cheerio.load(this.html);
+    doc(".yarpp-related").remove();
+    return <string[]>(
+      doc("img", "article").toArray().map(this.getSrcFromImgTag).filter(Boolean)
+    );
   }
 
   themeName(): string {

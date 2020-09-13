@@ -127,4 +127,29 @@ export abstract class BaseScrapper {
       return cheerio(red.content).text().replace(/\s+/g, " ").trim();
     }
   }
+
+  getSrcFromImgTag(img: CheerioElement) {
+    const image = cheerio(img);
+    const srcSet = image.attr("srcset");
+    try {
+      if (srcSet) {
+        const img = srcSet
+          .split(",")
+          .map((s) => s.trim().split(" "))
+          .reduce(
+            (acc: { link: string | undefined; width: number }, img) => {
+              const width = Number(img[1].replace("w", ""));
+              return width > acc.width ? { link: img[0], width: width } : acc;
+            },
+            { link: undefined, width: 0 }
+          );
+        return img.link;
+      } else {
+        return image.attr("src");
+      }
+    } catch (e) {
+      logger.warn(e, this.url);
+      return image.attr("src");
+    }
+  }
 }
