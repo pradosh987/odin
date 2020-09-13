@@ -41,7 +41,7 @@ const extractAndSaveTheme = async (scrapper: BaseScrapper, url: Url) => {
     featuredImageUrl: scrapper.featuredImage(),
     imageUrls: scrapper.images(),
     url_id: url.id,
-    htmlContent: scrapper.htmlContent(),
+    textContent: scrapper.textContent(),
   };
   return Theme.query().insert(theme);
 };

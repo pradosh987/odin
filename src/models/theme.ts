@@ -16,6 +16,7 @@ export class Theme extends BaseModel {
   imageUrls: string[];
   url_id: number;
   url: Url;
+  textContent: string;
 
   static relationMappings = {
     url: {

@@ -121,8 +121,10 @@ export abstract class BaseScrapper {
     }
   }
 
-  htmlContent() {
+  textContent() {
     const red = this.readability();
-    if (red) return red.content;
+    if (red) {
+      return cheerio(red.content).text().replace(/\s+/g, " ").trim();
+    }
   }
 }
