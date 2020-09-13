@@ -11,10 +11,15 @@ export class MicrosoftThemeStoreScrapper extends BaseScrapper {
   }
 
   images(): string[] {
-    // @ts-ignore
     return this.document(".module-responsive-screenshots  img")
       .map((i, e) => cheerio(e).attr("data-src"))
-      .toArray();
+      .toArray()
+      .map((link) => {
+        // @ts-ignore
+        const url = new URL("https:" + link);
+        url.search = "";
+        return url.toString();
+      });
   }
 
   themeName(): string {
