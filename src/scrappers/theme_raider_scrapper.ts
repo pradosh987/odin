@@ -11,9 +11,11 @@ export class ThemeRaiderScrapper extends BaseScrapper {
   }
 
   images(): string[] {
-    return this.document(".themepack-gallery img")
-      .toArray()
-      .map((e) => <string>cheerio(e).attr("src"));
+    return <string[]>[this.featuredImage()].concat(
+      this.document(".themepack-gallery img")
+        .toArray()
+        .map((e) => "https:" + cheerio(e).attr("src"))
+    );
   }
 
   themeName(): string {
