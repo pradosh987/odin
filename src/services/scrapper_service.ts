@@ -24,6 +24,7 @@ const scrapUrl = async (url: Url, maxDepth = 1) => {
 };
 
 const extractAndSaveTheme = async (scrapper: BaseScrapper, url: Url) => {
+  logger.info("Extracting and saving theme");
   const themeAlreadyExists = await Theme.query()
     .select(1)
     .findOne(raw("url_id = ?", url.id));
@@ -40,6 +41,7 @@ const extractAndSaveTheme = async (scrapper: BaseScrapper, url: Url) => {
     featuredImageUrl: scrapper.featuredImage(),
     imageUrls: scrapper.images(),
     url_id: url.id,
+    htmlContent: scrapper.htmlContent(),
   };
   return Theme.query().insert(theme);
 };
@@ -49,6 +51,7 @@ const enqueueInternalLinks = async (
   website: Website,
   maxDepth: number
 ) => {
+  logger.info("enqueuing links");
   const urlsInDB = await Url.query()
     .where({ website_id: website.id })
     .whereIn(

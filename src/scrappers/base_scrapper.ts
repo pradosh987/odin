@@ -2,6 +2,10 @@ import _ from "lodash";
 import cheerio from "cheerio";
 import { logger } from "../core/logger";
 import path from "path";
+import JSDOM from "jsdom";
+// @ts-ignore
+import { Readability } from "@mozilla/readability";
+import DOMPurify from "dompurify";
 
 const SKIP_URL_EXTENSIONS = [
   ".themepack",
@@ -103,19 +107,22 @@ export abstract class BaseScrapper {
 
   abstract images(): string[];
 
-  /*
-  htmlContent(): string | undefined {
+  readability(): { title: string; content: string } | undefined {
     try {
-      const window = new JSDOM("").window;
+      const window = new JSDOM.JSDOM("").window;
       // @ts-ignore
-      const DOMPurify = createDOMPurify(window);
-      const cleanHtml = DOMPurify.sanitize(this.html);
+      const domPurify = DOMPurify(window);
+      const cleanHtml = domPurify.sanitize(this.html);
 
-      const dom = new JSDOM(cleanHtml);
+      const dom = new JSDOM.JSDOM(cleanHtml);
       return new Readability(dom.window.document).parse();
     } catch (e) {
-      console.warn(e, this.url);
+      logger.warn(e, this.url);
     }
   }
-   */
+
+  htmlContent() {
+    const red = this.readability();
+    if (red) return red.content;
+  }
 }
