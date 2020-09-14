@@ -43,7 +43,7 @@ app.on(
 
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
-  origins: ["http://localhost:3001"],
+  origins: ["http://localhost:3000"],
   allowHeaders: ["API-Token"],
   exposeHeaders: ["API-Token-Expiry"],
 });
