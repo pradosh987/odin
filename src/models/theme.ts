@@ -6,6 +6,7 @@ import { Image } from "./Image";
 export class Theme extends BaseModel {
   static tableName = "themes";
 
+  id: number;
   name: string;
   metaTitle: string | undefined;
   metaDescription: string | undefined;

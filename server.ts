@@ -10,5 +10,6 @@ app.get("/", async (req: Request, res: Response, next: () => void) => {
 });
 
 app.get("/search", searchController.search);
+app.get("/visit/:id", searchController.visit);
 
 listenApp(app).then();
