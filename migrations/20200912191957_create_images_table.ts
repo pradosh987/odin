@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
     t.bigIncrements("id");
     t.string("remote_url").notNullable();
     t.bigInteger("theme_id").notNullable().index();
-    t.foreign("theme_id").references("themes.id");
+    t.foreign("theme_id").references("themes.id").onDelete("CASCADE");
     t.uuid("uuid").notNullable().defaultTo(knex.raw("uuid_generate_v4()"));
     t.boolean("local").defaultTo(false).notNullable();
   });

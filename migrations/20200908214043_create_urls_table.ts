@@ -7,12 +7,8 @@ export async function up(knex: Knex): Promise<void> {
     t.bigInteger("website_id").notNullable();
     t.foreign("website_id").references("websites.id");
     t.unique(["website_id", "path"]);
-    t.timestamp("created_at", { useTz: false })
-      .notNullable()
-      .defaultTo(knex.fn.now());
-    t.timestamp("updated_at", { useTz: false })
-      .notNullable()
-      .defaultTo(knex.fn.now());
+    t.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
+    t.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
   });
 }
 

@@ -6,9 +6,7 @@ export async function up(knex: Knex): Promise<void> {
     t.bigInteger("search_keyword_id").notNullable().index();
     t.foreign("search_keyword_id").references("search_keywords.id");
     t.string("ip");
-    t.timestamp("created_at", { useTz: false })
-      .notNullable()
-      .defaultTo(knex.fn.now());
+    t.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
   });
 }
 

@@ -11,6 +11,7 @@ export class Url extends BaseModel {
   path: string;
   websiteId: number;
   website: Website;
+  lastIndexedAt: string;
 
   static relationMappings = {
     website: {

@@ -15,12 +15,8 @@ export async function up(knex: Knex): Promise<void> {
     t.string("featured_image_url");
     t.specificType("image_urls", "VARCHAR[]").defaultTo("{}").notNullable();
     t.boolean("published").notNullable().defaultTo(true);
-    t.timestamp("created_at", { useTz: false })
-      .notNullable()
-      .defaultTo(knex.fn.now());
-    t.timestamp("updated_at", { useTz: false })
-      .notNullable()
-      .defaultTo(knex.fn.now());
+    t.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
+    t.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
   });
 }
 

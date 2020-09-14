@@ -4,7 +4,7 @@ import { buildScrapper } from "../scrappers/scrapper_factory";
 import { Website } from "../models/website";
 import { BaseScrapper } from "../scrappers/base_scrapper";
 import { Theme } from "../models/theme";
-import { raw } from "objection";
+import { raw, fn } from "objection";
 import { addScrappingJob } from "../core/bullmq";
 import * as urlManagerService from "./url_manager_service";
 import { Image } from "../models/Image";
@@ -52,6 +52,8 @@ const extractAndSaveTheme = async (scrapper: BaseScrapper, url: Url) => {
   if (images.length) {
     await Image.query().insert(images);
   }
+
+  await Url.query().update({ lastIndexedAt: fn.now() }).where("id", url.id);
 };
 
 const enqueueInternalLinks = async (
