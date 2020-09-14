@@ -1,5 +1,6 @@
 import { Theme } from "../models/theme";
 import { raw } from "objection";
+import { SearchKeyword } from "../models/SearchKeyword";
 
 export const search = (query: string) => {
   return Theme.query()
@@ -8,4 +9,13 @@ export const search = (query: string) => {
     )
     .limit(12)
     .withGraphFetched("url.[website]");
+};
+
+export const suggestSearchKeyword = async (query: string) => {
+  return SearchKeyword.query()
+    .select("value", raw("similarity(value, ?) as sim", query))
+    .where("suggest", true)
+    .whereRaw("value % ?", query)
+    .orderBy("sim", "DESC")
+    .limit(10);
 };
