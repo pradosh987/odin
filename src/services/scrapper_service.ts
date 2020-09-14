@@ -7,6 +7,7 @@ import { Theme } from "../models/theme";
 import { raw } from "objection";
 import { addScrappingJob } from "../core/bullmq";
 import * as urlManagerService from "./url_manager_service";
+import { Image } from "../models/Image";
 
 const scrapUrl = async (url: Url, maxDepth = 1) => {
   const completeUrl = await url.completeUrl();
@@ -31,19 +32,26 @@ const extractAndSaveTheme = async (scrapper: BaseScrapper, url: Url) => {
 
   if (themeAlreadyExists) return;
 
-  const theme: Partial<Theme> = {
-    name: scrapper.themeName(),
-    metaTitle: scrapper.metaTitle(),
-    metaDescription: scrapper.metaDescription(),
-    wallpapers: scrapper.wallpapersCount(),
-    icons: scrapper.iconsCount(),
-    size: scrapper.size(),
-    featuredImageUrl: scrapper.featuredImage(),
-    imageUrls: scrapper.images(),
-    url_id: url.id,
-    textContent: scrapper.textContent(),
-  };
-  return Theme.query().insert(theme);
+  const theme: Theme = await Theme.query()
+    .insert({
+      name: scrapper.themeName(),
+      metaTitle: scrapper.metaTitle(),
+      metaDescription: scrapper.metaDescription(),
+      wallpapers: scrapper.wallpapersCount(),
+      icons: scrapper.iconsCount(),
+      size: scrapper.size(),
+      url_id: url.id,
+      textContent: scrapper.textContent(),
+    })
+    .returning("id");
+
+  const images = scrapper
+    .images()
+    .map((i): Partial<Image> => ({ remoteUrl: i, themeId: theme.id }));
+
+  if (images.length) {
+    await Image.query().insert(images);
+  }
 };
 
 const enqueueInternalLinks = async (
