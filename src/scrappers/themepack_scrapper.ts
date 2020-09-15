@@ -15,7 +15,10 @@ export class ThemepackScrapper extends BaseScrapper {
   }
 
   isTheme(): boolean {
-    return this.url.pathname.includes("/theme/");
+    return (
+      this.url.pathname.includes("/theme/") &&
+      !this.url.pathname.includes("themepack")
+    );
   }
 
   themeName(): string {
