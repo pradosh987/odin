@@ -7,7 +7,7 @@ import JSDOM from "jsdom";
 import { Readability } from "@mozilla/readability";
 import DOMPurify from "dompurify";
 
-const SKIP_URL_EXTENSIONS = [
+export const SKIP_URL_EXTENSIONS = [
   ".themepack",
   ".deskthemepack",
   ".png",

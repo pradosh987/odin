@@ -23,6 +23,6 @@ export class Website extends BaseModel {
   };
 
   homepage() {
-    return Url.query().findById(this.homepageId);
+    return Url.query().findById(this.homepageId).withGraphFetched("website");
   }
 }

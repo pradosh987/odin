@@ -47,8 +47,7 @@ export async function seed(knex: Knex): Promise<void> {
 
       const urlId = await knex("urls")
         .insert({
-          path:
-            "/en-us/store/top-free/apps/pc?category=Personalization%5cThemes&cid=msft_web_collection",
+          path: "/en-us/store/collections/windowsthemes",
           website_id: siteId[0],
         })
         .returning("id");

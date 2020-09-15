@@ -94,7 +94,9 @@ const scrapWebsite = async (website: Website, maxDepth = 3) =>
 
 const scrapAllActiveWebsites = async () =>
   Promise.all(
-    (await Website.query().where({ active: true })).map(scrapWebsite)
+    (await Website.query().where({ active: true })).map((s) =>
+      scrapWebsite(s, 10000)
+    )
   );
 
 export { scrapUrl, scrapWebsite, scrapAllActiveWebsites };

@@ -1,5 +1,8 @@
-import { BaseScrapper } from "./base_scrapper";
+import { BaseScrapper, SKIP_URL_EXTENSIONS } from "./base_scrapper";
 import cheerio from "cheerio";
+import { logger } from "../core/logger";
+import path from "path";
+import _ from "lodash";
 
 export class MicrosoftThemeStoreScrapper extends BaseScrapper {
   isTheme() {
@@ -39,7 +42,7 @@ export class MicrosoftThemeStoreScrapper extends BaseScrapper {
     return [
       "#relateditems_overview a",
       ".m-pagination a",
-      ".context-list-page a",
+      "#productPlacementList a",
     ].flatMap((s) =>
       this.document(s)
         .toArray()
@@ -48,6 +51,29 @@ export class MicrosoftThemeStoreScrapper extends BaseScrapper {
   }
 
   internalLinks() {
-    return super.internalLinks().filter((u) => u.pathname.includes("/p/"));
+    const links = this.links()
+      .reduce((acc: URL[], urlString: string) => {
+        try {
+          const url = new URL(urlString, this.url.origin);
+          acc.push(url);
+        } catch (e) {
+          logger.info("Error encoding url.", e);
+        }
+        return acc;
+      }, [])
+      .filter(
+        (url) =>
+          url.host === this.url.host &&
+          url.pathname.length &&
+          !SKIP_URL_EXTENSIONS.includes(path.extname(url.pathname))
+      )
+      .map((url) => {
+        url.protocol = this.url.protocol;
+        return url;
+      });
+
+    return _.uniqBy(links, (url) => url.toString()).filter(
+      (u) => u.pathname.includes("/p/") || u.pathname.includes("/collections/")
+    );
   }
 }
