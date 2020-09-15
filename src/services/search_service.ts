@@ -8,7 +8,8 @@ export const search = (query: string) => {
       raw("to_tsvector(name || meta_description) @@ plainto_tsquery(?)", query)
     )
     .limit(12)
-    .withGraphFetched("url.[website]");
+    .withGraphFetched("url.[website]")
+    .withGraphFetched("images");
 };
 
 export const suggestSearchKeyword = async (query: string) => {
