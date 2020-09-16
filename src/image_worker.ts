@@ -1,4 +1,5 @@
 import "./core/objection";
+import "./src/core/sentry";
 import { Worker } from "bullmq";
 import { IMAGE_PROCESSING_QUEUE } from "./core/bullmq";
 import { logger } from "./core/logger";
