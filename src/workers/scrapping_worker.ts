@@ -1,10 +1,10 @@
-import "./core/objection";
+import "../core/objection";
 import "./src/core/sentry";
 import { Worker } from "bullmq";
-import { SCRAPPING_QUEUE } from "./core/bullmq";
-import { Url } from "./models/url";
-import { logger } from "./core/logger";
-import * as scrapperService from "./services/scrapper_service";
+import { SCRAPPING_QUEUE } from "../core/bullmq";
+import { Url } from "../models/url";
+import { logger } from "../core/logger";
+import * as scrapperService from "../services/scrapper_service";
 
 const worker = new Worker(SCRAPPING_QUEUE, async (job) => {
   logger.info(`Starting bull job: ${JSON.stringify(job.data)}`);

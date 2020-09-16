@@ -1,10 +1,10 @@
-import "./core/objection";
+import "../core/objection";
 import "./src/core/sentry";
 import { Worker } from "bullmq";
-import { IMAGE_PROCESSING_QUEUE } from "./core/bullmq";
-import { logger } from "./core/logger";
-import { Theme } from "./models/theme";
-import { downloadThemesImages } from "./services/image_service";
+import { IMAGE_PROCESSING_QUEUE } from "../core/bullmq";
+import { logger } from "../core/logger";
+import { Theme } from "../models/theme";
+import { downloadThemesImages } from "../services/image_service";
 
 const worker = new Worker(IMAGE_PROCESSING_QUEUE, async (job) => {
   logger.info(`Starting image download job: ${JSON.stringify(job.data)}`);
