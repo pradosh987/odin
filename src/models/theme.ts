@@ -18,6 +18,7 @@ export class Theme extends BaseModel {
   url_id: number;
   url: Url;
   textContent: string;
+  images: Image[];
 
   static relationMappings = {
     url: {
@@ -30,7 +31,7 @@ export class Theme extends BaseModel {
     },
     images: {
       relation: Model.HasManyRelation,
-      modelClass: Image,
+      modelClass: __dirname + "/Image",
       join: {
         from: "themes.id",
         to: "images.theme_id",
