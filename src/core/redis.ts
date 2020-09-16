@@ -7,7 +7,6 @@ export const getRedisClient = () => {
   return redis;
 };
 
-process.on(
-  "SIGINT",
-  async () => await Promise.all(connections.map((r) => r.quit().catch()))
+process.on("SIGINT", () =>
+  Promise.allSettled(connections.map((r) => r.quit().catch())).catch()
 );
