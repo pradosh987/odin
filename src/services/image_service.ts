@@ -12,12 +12,13 @@ export const imageVariants = {
   medium: { width: 600, height: undefined },
 };
 
-const buildImageUrl = (uuid: string, variant: "thumb" | "medium") => `${process.env.CDN}/images/${uuid}_${variant}.jpg`;
+const buildImageUrl = (image: Image, variant: "thumb" | "medium") =>
+  `${process.env.CDN}/themes/${image.themeId}/${image.uuid}_${variant}.jpg`;
 
 export const imageCdnUrls = (images: Image[]) =>
   images.map((i) => ({
-    thumb: i.local ? buildImageUrl(i.uuid, "thumb") : i.remoteUrl,
-    medium: i.local ? buildImageUrl(i.uuid, "medium") : i.remoteUrl,
+    thumb: i.local ? buildImageUrl(i, "thumb") : i.remoteUrl,
+    medium: i.local ? buildImageUrl(i, "medium") : i.remoteUrl,
   }));
 
 const downloadImageTmp = async ({ remoteUrl, uuid }: Image): Promise<string> => {
