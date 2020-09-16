@@ -1,0 +1,4 @@
+http://localhost:3001
+
+root * ../storage
+file_server
