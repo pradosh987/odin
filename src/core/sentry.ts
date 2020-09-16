@@ -5,3 +5,5 @@ Sentry.init({
   dsn: process.env.SENTRY_DNS,
   tracesSampleRate: 1.0,
 });
+
+export { Sentry };

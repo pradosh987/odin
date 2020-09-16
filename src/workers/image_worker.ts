@@ -5,6 +5,7 @@ import { IMAGE_PROCESSING_QUEUE } from "../core/bullmq";
 import { logger } from "../core/logger";
 import { Theme } from "../models/theme";
 import { downloadThemesImages } from "../services/image_service";
+import { Sentry } from "../core/sentry";
 
 const worker = new Worker(IMAGE_PROCESSING_QUEUE, async (job) => {
   logger.info(`Starting image download job: ${JSON.stringify(job.data)}`);
@@ -15,6 +16,7 @@ const worker = new Worker(IMAGE_PROCESSING_QUEUE, async (job) => {
     await downloadThemesImages(theme);
   } catch (e) {
     logger.error(e);
+    Sentry.captureException(e);
     throw e;
   }
   logger.info(`Finished image download job: ${JSON.stringify(job.data)}`);
