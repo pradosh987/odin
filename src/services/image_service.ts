@@ -9,3 +9,12 @@ export const downloadAndResizeImage = async () => {
   // @ts-ignore
   return sharp(stream.data).resize(500).toFile("output.jpg");
 };
+
+const buildImageUrl = (uuid: string, variant: "thumb" | "medium") =>
+  `${process.env.CDN}/images/${uuid}_${variant}.jpg`;
+
+export const imageCdnUrls = (images: Image[]) =>
+  images.map((i) => ({
+    thumb: i.local ? buildImageUrl(i.uuid, "thumb") : i.remoteUrl,
+    medium: i.local ? buildImageUrl(i.uuid, "medium") : i.remoteUrl,
+  }));

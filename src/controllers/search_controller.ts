@@ -5,6 +5,7 @@ import { BadRequestError } from "restify-errors";
 import { Theme } from "../models/theme";
 import path from "path";
 import { suggestSearchKeyword } from "../services/search_service";
+import { imageCdnUrls } from "../services/image_service";
 
 export const search = async (
   req: Request,
@@ -25,10 +26,7 @@ export const search = async (
     size: t.size,
     website: t.url.website.name,
     websiteUrl: t.url.website.url,
-    images: t.images.map((i) => ({
-      thumb: i.remoteUrl,
-      medium: i.remoteUrl,
-    })),
+    images: imageCdnUrls(t.images),
   }));
   res.json({
     data: themes,
