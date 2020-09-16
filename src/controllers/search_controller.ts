@@ -16,7 +16,20 @@ export const search = async (
     return next(new BadRequestError("Invalid query"));
   }
 
-  const themes = await searchService.search(query);
+  const themes = (await searchService.search(query)).map((t) => ({
+    id: t.id,
+    name: t.name,
+    wallpapers: t.wallpapers,
+    icons: t.icons,
+    description: t.metaDescription,
+    size: t.size,
+    website: t.url.website.name,
+    websiteUrl: t.url.website.url,
+    images: t.images.map((i) => ({
+      thumb: i.remoteUrl,
+      medium: i.remoteUrl,
+    })),
+  }));
   res.json({
     data: themes,
   });
