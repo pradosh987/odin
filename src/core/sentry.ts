@@ -1,5 +1,5 @@
-import Sentry from "@sentry/node";
-import Tracking from "@sentry/tracing";
+import * as Sentry from "@sentry/node";
+import * as Tracking from "@sentry/tracing";
 
 Sentry.init({
   dsn: process.env.SENTRY_DNS,
