@@ -1,4 +1,4 @@
-import { BaseModel } from "./base_model";
+import { BaseModel } from "./BaseModel";
 import { Model } from "objection";
 import { SearchRequest } from "./SearchRequest";
 

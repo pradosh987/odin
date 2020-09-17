@@ -1,5 +1,5 @@
-import { BaseModel } from "./base_model";
-import { Theme } from "./theme";
+import { BaseModel } from "./BaseModel";
+import { Theme } from "./Theme";
 import { Model } from "objection";
 
 export class Image extends BaseModel {

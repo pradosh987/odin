@@ -1,7 +1,7 @@
 import "../core/objection";
 import { Worker } from "bullmq";
 import { SCRAPPING_QUEUE } from "../core/bullmq";
-import { Url } from "../models/url";
+import { Url } from "../models/Url";
 import { logger } from "../core/logger";
 import * as scrapperService from "../services/scrapper_service";
 import { Sentry } from "../core/sentry";

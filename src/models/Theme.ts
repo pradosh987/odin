@@ -1,6 +1,6 @@
-import { BaseModel } from "./base_model";
+import { BaseModel } from "./BaseModel";
 import { Model } from "objection";
-import { Url } from "./url";
+import { Url } from "./Url";
 import { Image } from "./Image";
 
 export class Theme extends BaseModel {

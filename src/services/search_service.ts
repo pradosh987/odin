@@ -1,4 +1,4 @@
-import { Theme } from "../models/theme";
+import { Theme } from "../models/Theme";
 import { raw } from "objection";
 import { SearchKeyword } from "../models/SearchKeyword";
 

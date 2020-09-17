@@ -1,9 +1,9 @@
-import { Url } from "../models/url";
+import { Url } from "../models/Url";
 import { logger } from "../core/logger";
 import { buildScrapper } from "../scrappers/scrapper_factory";
-import { Website } from "../models/website";
+import { Website } from "../models/Website";
 import { BaseScrapper } from "../scrappers/base_scrapper";
-import { Theme } from "../models/theme";
+import { Theme } from "../models/Theme";
 import { raw, fn } from "objection";
 import { backgroundWorker } from "../core/bullmq";
 import * as urlManagerService from "./url_manager_service";

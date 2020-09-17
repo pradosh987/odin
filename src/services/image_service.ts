@@ -1,5 +1,5 @@
 import { Image } from "../models/Image";
-import { Theme } from "../models/theme";
+import { Theme } from "../models/Theme";
 import axios from "axios";
 import sharp from "sharp";
 import { logger } from "../core/logger";

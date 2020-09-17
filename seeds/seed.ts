@@ -1,7 +1,7 @@
 import * as Knex from "knex";
 import _ from "lodash";
-import { Website } from "../src/models/website";
-import { Url } from "../src/models/url";
+import { Website } from "../src/models/Website";
+import { Url } from "../src/models/Url";
 
 export async function seed(knex: Knex): Promise<void> {
   try {

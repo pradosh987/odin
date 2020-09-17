@@ -1,6 +1,6 @@
-import { BaseModel } from "./base_model";
+import { BaseModel } from "./BaseModel";
 import { Model } from "objection";
-import { Url } from "./url";
+import { Url } from "./Url";
 
 export class Website extends BaseModel {
   static tableName = "websites";
@@ -14,7 +14,7 @@ export class Website extends BaseModel {
   static relationMappings = {
     urls: {
       relation: Model.HasOneRelation,
-      modelClass: Url,
+      modelClass: __dirname + "/Url",
       join: {
         from: "websites.id",
         to: "urls.website_id",

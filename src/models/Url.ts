@@ -1,8 +1,7 @@
-import { BaseModel } from "./base_model";
+import { BaseModel } from "./BaseModel";
 import { Model } from "objection";
-import { Website } from "./website";
+import { Website } from "./Website";
 import path from "path";
-import { Theme } from "./theme";
 
 export class Url extends BaseModel {
   static tableName = "urls";
