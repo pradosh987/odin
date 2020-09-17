@@ -11,6 +11,7 @@ export class Image extends BaseModel {
   theme: Theme;
   local: boolean;
   valid: boolean;
+  featured: boolean;
 
   static relationMappings = {
     theme: {

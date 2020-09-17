@@ -19,6 +19,7 @@ export const imageCdnUrls = (images: Image[]) =>
   images.map((i) => ({
     thumb: i.local ? buildImageUrl(i, "thumb") : i.remoteUrl,
     medium: i.local ? buildImageUrl(i, "medium") : i.remoteUrl,
+    featured: i.featured,
   }));
 
 const downloadImageTmp = async ({ remoteUrl, uuid }: Image): Promise<string> => {
