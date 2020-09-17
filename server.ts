@@ -12,5 +12,6 @@ app.get("/", async (req: Request, res: Response, next: () => void) => {
 
 app.get("/search", searchController.search);
 app.get("/visit/:id", searchController.visit);
+app.get("/suggest", searchController.suggest);
 
 listenApp(app).then();
