@@ -16,7 +16,7 @@ export class Url extends BaseModel {
   static relationMappings = {
     website: {
       relation: Model.BelongsToOneRelation,
-      modelClass: Website,
+      modelClass: __dirname + "/Website",
       join: {
         from: "urls.website_id",
         to: "websites.id",
@@ -24,7 +24,7 @@ export class Url extends BaseModel {
     },
     theme: {
       relation: Model.HasOneRelation,
-      modelClass: Theme,
+      modelClass: __dirname + "/Theme",
       join: {
         from: "urls.id",
         to: "themes.url_id",

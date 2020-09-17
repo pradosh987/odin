@@ -23,7 +23,7 @@ export class Theme extends BaseModel {
   static relationMappings = {
     url: {
       relation: Model.BelongsToOneRelation,
-      modelClass: Url,
+      modelClass: __dirname + "/Url",
       join: {
         from: "themes.url_id",
         to: "urls.id",
