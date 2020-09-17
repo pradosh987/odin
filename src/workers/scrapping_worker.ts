@@ -1,5 +1,4 @@
 import "../core/objection";
-import "./src/core/sentry";
 import { Worker } from "bullmq";
 import { SCRAPPING_QUEUE } from "../core/bullmq";
 import { Url } from "../models/url";
