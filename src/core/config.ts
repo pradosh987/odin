@@ -1,12 +1,6 @@
-const env = process.env.NODE_ENV || "development";
-
-if (env === "development") {
-  import("dotenv").then((dotenv) => dotenv.config());
-}
-
 export const config = {
   port: process.env.PORT || 4000,
-  env: env,
+  env: process.env.NODE_ENV || "development",
   appName: "Odin",
   secret: process.env.SECRET,
   redis: process.env.REDIS,

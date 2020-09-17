@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "NODE_ENV=development concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
-    "watch-node": "nodemon dist/server.js",
+    "watch-node": "nodemon -r dotenv/config dist/server.js",
     "watch-worker": "nodemon dist/src/worker.js",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
