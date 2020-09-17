@@ -1,8 +1,7 @@
 const env = process.env.NODE_ENV || "development";
-import dotenv from "dotenv";
 
 if (env === "development") {
-  dotenv.config();
+  import("dotenv").then((dotenv) => dotenv.config());
 }
 
 export const config = {
