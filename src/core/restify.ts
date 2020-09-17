@@ -43,7 +43,7 @@ app.on(
 
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
-  origins: ["http://localhost:3000"],
+  origins: ["http://localhost:3000", "https://digthemes.com"],
   allowHeaders: ["API-Token"],
   exposeHeaders: ["API-Token-Expiry"],
 });
@@ -65,9 +65,7 @@ const listenApp = (app: Server): Promise<Server> => {
 
       process.on("SIGINT", function () {
         logger.info("SIGINT received, shutting down restify server.");
-        app.close(() =>
-          logger.info("Restify server shutdown complete after SIGINT signal.")
-        );
+        app.close(() => logger.info("Restify server shutdown complete after SIGINT signal."));
       });
       resolve(app);
     })
