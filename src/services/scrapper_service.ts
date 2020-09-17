@@ -13,7 +13,15 @@ const scrapUrl = async (url: Url, maxDepth = 1) => {
   const completeUrl = await url.completeUrl();
   logger.info(`Scrapping Url ${completeUrl}`, url);
   const uri = new URL(completeUrl);
-  const scrapper = await buildScrapper(uri);
+  let scrapper: BaseScrapper;
+  try {
+    scrapper = await buildScrapper(uri);
+  } catch (e) {
+    if (e.response && e.response.status !== 200) {
+      return Url.query().update({ statusCode: e.response.status, lastIndexedAt: fn.now() }).where({ id: url.id });
+    }
+    throw e;
+  }
 
   if (scrapper.isTheme()) {
     await extractAndSaveTheme(scrapper, url);
