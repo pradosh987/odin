@@ -56,17 +56,20 @@ const resizeImage = async (image: Image, source: string, variantKey: string) => 
   return sharp(source).resize(variant.width, variant.height).toFile(destination);
 };
 
-export const downloadThemesImages = async (theme: Theme) => {
-  logger.info("START: Downloading themes images: ", theme.id, theme.name);
-
-  await Promise.all(
-    (theme.images || []).map(async (i) => {
-      const tmpImage = await downloadImageTmp(i);
-      await Promise.all(Object.keys(imageVariants).map((v) => resizeImage(i, tmpImage, v)));
-      await fs.remove(tmpImage);
-      return Image.query().update({ local: true }).where({ id: i.id });
-    })
-  );
-
-  logger.info("END: Downloading themes images: ", theme.id, theme.name);
+export const downloadThemeImage = async (image: Image) => {
+  logger.info("START: Downloading image: ", image);
+  let tmpImage: string | undefined;
+  try {
+    tmpImage = await downloadImageTmp(image);
+    await Promise.all(Object.keys(imageVariants).map((v) => resizeImage(image, <string>tmpImage, v)));
+    await Image.query().update({ local: true, valid: true }).where({ id: image.id });
+    logger.info("END: Downloading image: ", image);
+  } catch (e) {
+    if (e.response && e.response.status === 404) {
+      await Image.query().update({ valid: false }).where({ id: image.id });
+    }
+    throw e;
+  } finally {
+    if (tmpImage) await fs.remove(tmpImage);
+  }
 };

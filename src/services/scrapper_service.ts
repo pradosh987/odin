@@ -48,8 +48,9 @@ const extractAndSaveTheme = async (scrapper: BaseScrapper, url: Url) => {
   const images = scrapper.images().map((i): Partial<Image> => ({ remoteUrl: i, themeId: theme.id }));
 
   if (images.length) {
-    await Image.query().insert(images);
-    await backgroundWorker.addImageProcessingJob(theme.id);
+    const imageIds = await Image.query().insert(images).returning("id");
+    // @ts-ignore
+    await Promise.all(imageIds.map((i: number) => backgroundWorker.addImageProcessingJob(i)));
   }
 };
 

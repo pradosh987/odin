@@ -16,8 +16,8 @@ const addScrappingJob = (urlId: number, maxDepth: number) => {
   return queue.add(SCRAPPING_QUEUE, { urlId, maxDepth });
 };
 
-const addImageProcessingJob = (themeId: number) => {
-  return imageQueue.add(IMAGE_PROCESSING_QUEUE, { themeId });
+const addImageProcessingJob = (imageId: number) => {
+  return imageQueue.add(IMAGE_PROCESSING_QUEUE, { imageId });
 };
 
 export const backgroundWorker = {

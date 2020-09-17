@@ -2,17 +2,17 @@ import "../core/objection";
 import { Worker } from "bullmq";
 import { IMAGE_PROCESSING_QUEUE } from "../core/bullmq";
 import { logger } from "../core/logger";
-import { Theme } from "../models/theme";
-import { downloadThemesImages } from "../services/image_service";
+import { downloadThemeImage } from "../services/image_service";
 import { Sentry } from "../core/sentry";
+import { Image } from "../models/Image";
 
 const worker = new Worker(IMAGE_PROCESSING_QUEUE, async (job) => {
   logger.info(`Starting image download job: ${JSON.stringify(job.data)}`);
 
-  const theme = await Theme.query().findById(job.data.themeId).withGraphFetched("images");
+  const image = await Image.query().findById(job.data.imageId);
 
   try {
-    await downloadThemesImages(theme);
+    await downloadThemeImage(image);
   } catch (e) {
     logger.error(e);
     Sentry.captureException(e);
