@@ -8,6 +8,7 @@ import { raw, fn } from "objection";
 import { backgroundWorker } from "../core/bullmq";
 import * as urlManagerService from "./url_manager_service";
 import { Image } from "../models/Image";
+import { relativeUrl } from "../utils";
 
 const scrapUrl = async (url: Url, maxDepth = 1) => {
   const completeUrl = await url.completeUrl();
@@ -56,25 +57,20 @@ const extractAndSaveTheme = async (scrapper: BaseScrapper, url: Url) => {
   const images = scrapper.images().map((i): Partial<Image> => ({ remoteUrl: i, themeId: theme.id }));
 
   if (images.length) {
-    const imageIds = await Image.query().insert(images).returning("id");
-    // @ts-ignore
-    await Promise.all(imageIds.map((i: number) => backgroundWorker.addImageProcessingJob(i)));
+    const imgs = await Image.query().insert(images).returning("id");
+    await Promise.all(imgs.map((i) => backgroundWorker.addImageProcessingJob(i.id)));
   }
 };
 
 const enqueueInternalLinks = async (internalLinks: URL[], website: Website, maxDepth: number) => {
   logger.info("enqueuing links");
-  const urlsInDB = await Url.query()
-    .where({ website_id: website.id })
-    .whereIn(
-      "path",
-      internalLinks.map((i) => i.pathname)
-    );
+  const relativeUrls = internalLinks.map(relativeUrl);
+  const urlsInDB = await Url.query().where({ website_id: website.id }).whereIn("path", relativeUrls);
   const urlsInDBPaths = urlsInDB.map((url) => url.path);
 
-  const newUrls = internalLinks
-    .filter((u) => !urlsInDBPaths.includes(u.pathname))
-    .map((u) => ({ website_id: website.id, path: u.pathname }));
+  const newUrls = relativeUrls
+    .filter((u) => !urlsInDBPaths.includes(u))
+    .map((u) => ({ website_id: website.id, path: u }));
 
   const newUrlsInDb = await Url.query().insert(newUrls).returning("*");
 
