@@ -22,7 +22,7 @@ export const search = async (req: Request, res: Response, next: NextHandler) => 
     size: t.size,
     website: t.url.website.name,
     websiteUrl: t.url.website.url,
-    images: imageCdnUrls(t.images),
+    images: imageCdnUrls(t.images.filter((i) => i.valid)),
   }));
   res.json({
     data: themes,
