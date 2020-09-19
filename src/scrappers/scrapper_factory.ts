@@ -25,4 +25,4 @@ export const buildScrapper = async (url: URL) => {
 };
 
 const get = (url: string, config: AxiosRequestConfig = {}) =>
-  axios.get(url, { timeout: 5000, ...config }).then((res) => res.data);
+  axios.get(url, { timeout: 5000, ...config, maxContentLength: 500 * 1000 }).then((res) => res.data);
