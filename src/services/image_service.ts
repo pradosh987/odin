@@ -34,6 +34,7 @@ const downloadImageTmp = async ({ remoteUrl, uuid }: Image): Promise<string> => 
 
   const stream = await axios.get(remoteUrl, {
     responseType: "stream",
+    timeout: 5000,
     ...(url.host === "themepack.me" ? { httpsAgent } : {}),
   });
   const writer = fs.createWriteStream(tmpFile);

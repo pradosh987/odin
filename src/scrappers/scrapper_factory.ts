@@ -18,14 +18,11 @@ export const buildScrapper = async (url: URL) => {
       const agent = new https.Agent({
         rejectUnauthorized: false,
       });
-      return new ThemepackScrapper(
-        url,
-        await get(url.toString(), { httpsAgent: agent })
-      );
+      return new ThemepackScrapper(url, await get(url.toString(), { httpsAgent: agent }));
     default:
       throw Error(`No scrapper found for ${url.host}, ${url.hostname}`);
   }
 };
 
 const get = (url: string, config: AxiosRequestConfig = {}) =>
-  axios.get(url, config).then((res) => res.data);
+  axios.get(url, { timeout: 5000, ...config }).then((res) => res.data);
