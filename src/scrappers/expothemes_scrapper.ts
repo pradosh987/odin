@@ -35,7 +35,7 @@ export class ExpoThemesScrapper extends BaseScrapper {
     });
 
     if (elements.length !== 1) return 0;
-    return Number.parseInt(cheerio(cheerio(elements[0]).find("td")[1]).text());
+    return Number.parseInt(cheerio(cheerio(elements[0]).find("td")[1]).text()) || undefined;
   }
 
   iconsCount() {
@@ -45,7 +45,7 @@ export class ExpoThemesScrapper extends BaseScrapper {
     });
 
     if (elements.length !== 1) return 0;
-    return Number.parseInt(cheerio(cheerio(elements[0]).find("td")[1]).text());
+    return Number.parseInt(cheerio(cheerio(elements[0]).find("td")[1]).text()) || undefined;
   }
   size(): string | undefined {
     try {
