@@ -14,7 +14,12 @@ export class ThemeRaiderScrapper extends BaseScrapper {
     return <string[]>[this.featuredImage()].concat(
       this.document(".themepack-gallery img")
         .toArray()
-        .map((e) => "https:" + cheerio(e).attr("src"))
+        .map((e) => {
+          const link = cheerio(e).attr("src");
+          // @ts-ignore
+          return link.includes("http") ? link : "https:" + link;
+        })
+        .slice(0, 4)
     );
   }
 
