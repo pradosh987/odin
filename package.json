@@ -8,7 +8,8 @@
     "watch-worker": "nodemon dist/src/worker.js",
     "build": "tsc",
     "watch-ts": "tsc -w",
-    "tail-logs": "tail -f logs/odin.log | bunyan"
+    "tail-logs": "tail -f logs/odin.log | bunyan",
+    "migrate": "knex migrate:latest"
   },
   "author": "",
   "license": "ISC",
@@ -29,8 +30,7 @@
     "concurrently": "^5.3.0",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.4",
-    "prettier": "^2.1.1",
-    "ts-node": "^9.0.0"
+    "prettier": "^2.1.1"
   },
   "dependencies": {
     "@mozilla/readability": "^0.3.0",
@@ -55,6 +55,7 @@
     "restify-errors": "^8.0.2",
     "restify-router": "^0.6.1",
     "sharp": "^0.26.0",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.2"
   }
 }

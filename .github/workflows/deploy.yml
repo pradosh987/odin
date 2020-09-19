@@ -22,4 +22,5 @@ jobs:
           git pull origin master
           npm install --production
           npm run build
+          npm run migrate
           pm2 restart digthemes
