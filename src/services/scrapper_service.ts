@@ -9,6 +9,7 @@ import { backgroundWorker } from "../core/bullmq";
 import * as urlManagerService from "./url_manager_service";
 import { Image } from "../models/Image";
 import { relativeUrl } from "../utils";
+import moment from "moment";
 
 const scrapUrl = async (url: Url, maxDepth = 1) => {
   const completeUrl = await url.completeUrl();
@@ -90,7 +91,14 @@ const enqueueUrl = async (url: Url, website: Website, maxDepth: number) => {
   }
 };
 
-const scrapWebsite = async (website: Website, maxDepth = 2) => enqueueUrl(await website.homepage(), website, maxDepth);
+const scrapWebsite = async (website: Website, maxDepth = 2) => {
+  if (!website.lastIndexedAt || moment(website.lastIndexedAt).add(18, "hours").isBefore(moment())) {
+    await enqueueUrl(await website.homepage(), website, maxDepth);
+    return Website.query().update({ lastIndexedAt: fn.now() }).where({ id: website.id });
+  } else {
+    logger.warn("Last index was within last 18 hr window", website);
+  }
+};
 
 const scrapAllActiveWebsites = async () =>
   Promise.all((await Website.query().where({ active: true })).map(scrapWebsite));

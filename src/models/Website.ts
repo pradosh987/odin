@@ -10,6 +10,7 @@ export class Website extends BaseModel {
   url: string;
   active: boolean;
   homepageId: number;
+  lastIndexedAt: string;
 
   static relationMappings = {
     urls: {
