@@ -1,6 +1,6 @@
 import { BaseScrapper } from "./base_scrapper";
 import { logger } from "../core/logger";
-import path from "path";
+import _ from "lodash";
 
 export class ThemepackScrapper extends BaseScrapper {
   featuredImage(): string | undefined {
@@ -8,17 +8,15 @@ export class ThemepackScrapper extends BaseScrapper {
   }
 
   images(): string[] {
-    return <string[]>this.document("#image-gallery img")
+    const images = <string[]>this.document("#image-gallery img")
       .toArray()
       .map(this.getSrcFromImgTag)
-      .map((i) => path.join(this.url.origin, <string>i));
+      .map((i) => `${this.url.origin}${i}`);
+    return _.take(images, 5);
   }
 
   isTheme(): boolean {
-    return (
-      this.url.pathname.includes("/theme/") &&
-      !this.url.pathname.includes("themepack")
-    );
+    return this.url.pathname.includes("/theme/") && !this.url.pathname.includes("themepack");
   }
 
   themeName(): string {
@@ -27,12 +25,7 @@ export class ThemepackScrapper extends BaseScrapper {
 
   wallpapersCount(): number | undefined {
     try {
-      return this.document(".uk-list li")
-        .last()
-        .text()
-        .split(" ")
-        .map(Number)
-        .filter(Boolean)[0];
+      return this.document(".uk-list li").last().text().split(" ").map(Number).filter(Boolean)[0];
     } catch (e) {
       logger.warn(e, this.url);
       return undefined;
