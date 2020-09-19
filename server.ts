@@ -4,6 +4,7 @@ import "./src/core/objection";
 import "./src/core/bullmq";
 import "./src/core/sentry";
 import * as searchController from "./src/controllers/search_controller";
+import "./src/core/cron";
 
 app.get("/", async (req: Request, res: Response, next: () => void) => {
   res.json({ msg: "Hello world" });

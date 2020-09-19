@@ -90,9 +90,9 @@ const enqueueUrl = async (url: Url, website: Website, maxDepth: number) => {
   }
 };
 
-const scrapWebsite = async (website: Website, maxDepth = 3) => enqueueUrl(await website.homepage(), website, maxDepth);
+const scrapWebsite = async (website: Website, maxDepth = 2) => enqueueUrl(await website.homepage(), website, maxDepth);
 
 const scrapAllActiveWebsites = async () =>
-  Promise.all((await Website.query().where({ active: true })).map((s) => scrapWebsite(s, 10000)));
+  Promise.all((await Website.query().where({ active: true })).map(scrapWebsite));
 
 export { scrapUrl, scrapWebsite, scrapAllActiveWebsites };
