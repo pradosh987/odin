@@ -6,6 +6,7 @@ import { logger } from "../core/logger";
 import path from "path";
 import os from "os";
 import fs from "fs-extra";
+import https from "https";
 
 export const imageVariants = {
   thumb: { width: 350, height: 280 },
@@ -25,7 +26,16 @@ export const imageCdnUrls = (images: Image[]) =>
 const downloadImageTmp = async ({ remoteUrl, uuid }: Image): Promise<string> => {
   const tmpFile = path.join(os.tmpdir(), `tmp_${uuid}.jpg`);
   await fs.remove(tmpFile);
-  const stream = await axios.get(remoteUrl, { responseType: "stream" });
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+  });
+
+  const url = new URL(remoteUrl);
+
+  const stream = await axios.get(remoteUrl, {
+    responseType: "stream",
+    ...(url.host === "themepack.me" ? { httpsAgent } : {}),
+  });
   const writer = fs.createWriteStream(tmpFile);
 
   return new Promise((resolve, reject) => {
