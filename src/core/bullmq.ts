@@ -1,23 +1,18 @@
-import { Queue } from "bullmq";
 import "../core/objection";
-import { getRedisClient } from "./redis";
-
-const connection = getRedisClient();
+import Queue from "bull";
 
 export const SCRAPPING_QUEUE = "SCRAPPER";
 export const IMAGE_PROCESSING_QUEUE = "IMAGE_PROCESSOR";
 
-const queue = new Queue(SCRAPPING_QUEUE, { connection });
-const imageQueue = new Queue(IMAGE_PROCESSING_QUEUE, {
-  connection: getRedisClient(),
-});
+export const scrapperQueue = new Queue(SCRAPPING_QUEUE);
+export const imageProcessingQueue = new Queue(IMAGE_PROCESSING_QUEUE);
 
 const addScrappingJob = (urlId: number, maxDepth: number) => {
-  return queue.add(SCRAPPING_QUEUE, { urlId, maxDepth });
+  return scrapperQueue.add({ urlId, maxDepth });
 };
 
 const addImageProcessingJob = (imageId: number) => {
-  return imageQueue.add(IMAGE_PROCESSING_QUEUE, { imageId });
+  return imageProcessingQueue.add({ imageId });
 };
 
 export const backgroundWorker = {

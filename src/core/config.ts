@@ -15,4 +15,6 @@ export const config = {
     level: process.env.LOG_LEVEL || "info",
     logfile: process.env.LOG_FILE || "logs/odin.log",
   },
+  imageWorkers: Number(process.env.IMAGE_WORKER_COUNT) || 1,
+  scrappingWorkers: Number(process.env.SCRAPPER_WORKER_COUNT) || 1,
 };
