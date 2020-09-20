@@ -22,8 +22,7 @@ jobs:
           cd ~/odin/odin
           git pull origin master
           npm install --production
-          echo $DB_USERNAME
-          echo $DB_PASSWORD
+          source /etc/profile.d/app-env.sh
           npm run build
           npm run migrate
           pm2 restart digthemes
