@@ -2,6 +2,7 @@ import { BaseModel } from "./BaseModel";
 import { Model } from "objection";
 import { Url } from "./Url";
 import { Image } from "./Image";
+import { ThemeVisit } from "./ThemeVisit";
 
 export class Theme extends BaseModel {
   static tableName = "themes";
@@ -19,6 +20,7 @@ export class Theme extends BaseModel {
   url: Url;
   textContent: string;
   images: Image[];
+  themeVisits: ThemeVisit[];
 
   static relationMappings = {
     url: {
@@ -36,6 +38,11 @@ export class Theme extends BaseModel {
         from: "themes.id",
         to: "images.theme_id",
       },
+    },
+    theme_visits: {
+      relation: Model.HasManyRelation,
+      modelClass: __dirname + "/ThemeVisit",
+      join: { from: "themes.id", to: "theme_visits.id" },
     },
   };
 }

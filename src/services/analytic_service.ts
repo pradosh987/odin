@@ -1,5 +1,6 @@
 import { SearchKeyword } from "../models/SearchKeyword";
 import { SearchRequest } from "../models/SearchRequest";
+import { ThemeVisit } from "../models/ThemeVisit";
 
 export const recordSearchRequest = async (query: string) => {
   if (!query) return;
@@ -11,3 +12,5 @@ export const recordSearchRequest = async (query: string) => {
 
   return SearchRequest.query().insert({ searchKeywordId: keyword.id });
 };
+
+export const recordThemeVisit = (themeId: number) => ThemeVisit.query().insert({ themeId: themeId });

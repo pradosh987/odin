@@ -6,8 +6,9 @@ import { Theme } from "../models/Theme";
 import path from "path";
 import { suggestSearchKeyword } from "../services/search_service";
 import { imageCdnUrls } from "../services/image_service";
-import { recordSearchRequest } from "../services/analytic_service";
+import { recordSearchRequest, recordThemeVisit } from "../services/analytic_service";
 import { logger } from "../core/logger";
+import { NotFoundError } from "objection";
 
 export const search = async (req: Request, res: Response, next: NextHandler) => {
   const query = req.params.q;
@@ -36,6 +37,9 @@ export const search = async (req: Request, res: Response, next: NextHandler) => 
 
 export const visit = async (req: Request, res: Response, next: NextHandler) => {
   const theme = await Theme.query().findById(req.params.id).withGraphFetched("url.[website]");
+
+  if (!theme) return next(new NotFoundError("Theme not found."));
+  recordThemeVisit(theme.id).catch((e) => logger.error(e, theme.id));
 
   const redirectUrl = `${theme.url.website.url}${theme.url.path}`;
   res.redirect(redirectUrl, next);
