@@ -7,15 +7,7 @@ import JSDOM from "jsdom";
 import { Readability } from "@mozilla/readability";
 import DOMPurify from "dompurify";
 
-export const SKIP_URL_EXTENSIONS = [
-  ".themepack",
-  ".deskthemepack",
-  ".png",
-  ".jpg",
-  ".jpeg",
-  ".exe",
-  ".zip",
-];
+export const SKIP_URL_EXTENSIONS = [".themepack", ".deskthemepack", ".png", ".jpg", ".jpeg", ".exe", ".zip"];
 
 export abstract class BaseScrapper {
   protected document: CheerioStatic;
@@ -71,9 +63,7 @@ export abstract class BaseScrapper {
       }, [])
       .filter(
         (url) =>
-          url.host === this.url.host &&
-          url.pathname.length &&
-          !SKIP_URL_EXTENSIONS.includes(path.extname(url.pathname))
+          url.host === this.url.host && url.pathname.length && !SKIP_URL_EXTENSIONS.includes(path.extname(url.pathname))
       )
       .map((url) => {
         url.protocol = this.url.protocol;
@@ -130,7 +120,7 @@ export abstract class BaseScrapper {
 
   getSrcFromImgTag(img: CheerioElement) {
     const image = cheerio(img);
-    const srcSet = image.attr("srcset");
+    const srcSet = image.attr("srcset") || image.attr("data-srcset");
     try {
       if (srcSet) {
         const img = srcSet

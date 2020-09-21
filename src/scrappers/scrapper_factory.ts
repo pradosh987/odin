@@ -5,6 +5,7 @@ import { MicrosoftThemeStoreScrapper } from "./microsoft_theme_store_scrapper";
 import { ThemeRaiderScrapper } from "./theme_raider_scrapper";
 import { ThemepackScrapper } from "./themepack_scrapper";
 import https from "https";
+import { Theme10Scrapper } from "./Theme10Scrapper";
 
 export const buildScrapper = async (url: URL) => {
   switch (url.host) {
@@ -19,6 +20,8 @@ export const buildScrapper = async (url: URL) => {
         rejectUnauthorized: false,
       });
       return new ThemepackScrapper(url, await get(url.toString(), { httpsAgent: agent }));
+    case "themes10.win":
+      return new Theme10Scrapper(url, await get(url.toString()));
     default:
       throw Error(`No scrapper found for ${url.host}, ${url.hostname}`);
   }

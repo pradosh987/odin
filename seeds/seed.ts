@@ -25,6 +25,11 @@ export async function seed(knex: Knex): Promise<void> {
             url: "https://www.themeraider.com",
             active: true,
           },
+          {
+            name: "Themes10",
+            url: "https://themes10.win/",
+            active: true,
+          },
         ]);
 
       const homepageIds = await knex("urls")
