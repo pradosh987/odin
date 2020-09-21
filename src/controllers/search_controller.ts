@@ -6,12 +6,16 @@ import { Theme } from "../models/Theme";
 import path from "path";
 import { suggestSearchKeyword } from "../services/search_service";
 import { imageCdnUrls } from "../services/image_service";
+import { recordSearchRequest } from "../services/analytic_service";
+import { logger } from "../core/logger";
 
 export const search = async (req: Request, res: Response, next: NextHandler) => {
   const query = req.params.q;
   if (!query || query.length < 3) {
     return next(new BadRequestError("Invalid query"));
   }
+
+  recordSearchRequest(query).catch((e) => logger.error(e, query));
 
   const themes = (await searchService.search(query)).map((t) => ({
     id: t.id,
