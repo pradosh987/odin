@@ -33,7 +33,7 @@ export const search = async (req: Request, res: Response, next: NextHandler) => 
 export const visit = async (req: Request, res: Response, next: NextHandler) => {
   const theme = await Theme.query().findById(req.params.id).withGraphFetched("url.[website]");
 
-  const redirectUrl = path.join(theme.url.website.url, theme.url.path);
+  const redirectUrl = `${theme.url.website.url}${theme.url.path}`;
   res.redirect(redirectUrl, next);
 };
 
