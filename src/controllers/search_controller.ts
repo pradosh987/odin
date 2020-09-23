@@ -3,7 +3,6 @@ import { NextHandler } from "../utils";
 import * as searchService from "../services/search_service";
 import { BadRequestError } from "restify-errors";
 import { Theme } from "../models/Theme";
-import path from "path";
 import { suggestSearchKeyword } from "../services/search_service";
 import { imageCdnUrls } from "../services/image_service";
 import { recordSearchRequest, recordThemeVisit } from "../services/analytic_service";
@@ -18,7 +17,9 @@ export const search = async (req: Request, res: Response, next: NextHandler) => 
 
   recordSearchRequest(query).catch((e) => logger.error(e, query));
 
-  const themes = (await searchService.search(query)).map((t) => ({
+  const page = Math.max(Number(req.params.page) || 1, 1);
+  const data = await searchService.search(query, page);
+  const themes = data.map((t) => ({
     id: t.id,
     name: t.name,
     wallpapers: t.wallpapers,
@@ -31,6 +32,10 @@ export const search = async (req: Request, res: Response, next: NextHandler) => 
   }));
   res.json({
     data: themes,
+    // @ts-ignore
+    totalPages: Math.ceil(((data[0] && data[0].totalCount) || 0) / 10),
+    currentPage: page,
+    query: query,
   });
   next();
 };
