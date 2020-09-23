@@ -1,5 +1,4 @@
 import { Image } from "../models/Image";
-import { Theme } from "../models/Theme";
 import axios from "axios";
 import sharp from "sharp";
 import { logger } from "../core/logger";
@@ -7,6 +6,9 @@ import path from "path";
 import os from "os";
 import fs from "fs-extra";
 import https from "https";
+import { config } from "../core/config";
+import { createGoogleCloudWriteStream } from "../core/google_storage";
+import { fileWriteStream } from "../utils";
 
 export const imageVariants = {
   thumb: { width: 350, height: 280 },
@@ -58,15 +60,15 @@ const downloadImageTmp = async ({ remoteUrl, uuid }: Image): Promise<string> => 
 const resizeImage = async (image: Image, source: string, variantKey: string) => {
   // @ts-ignore
   const variant = imageVariants[variantKey];
-  const destination = path.join(
-    <string>process.env.IMAGE_STORE,
-    "themes",
-    image.themeId.toString(),
-    `${image.uuid}_${variantKey}.jpg`
-  );
-  await fs.mkdirp(path.dirname(destination));
+  const destination = path.join("themes", image.themeId.toString(), `${image.uuid}_${variantKey}.jpg`);
 
-  return sharp(source).resize(variant.width, variant.height).toFile(destination);
+  const writeStream = config.isProduction
+    ? createGoogleCloudWriteStream(destination)
+    : await fileWriteStream(path.join(<string>process.env.IMAGE_STORE, destination));
+
+  return new Promise((resolve, reject) =>
+    sharp(source).resize(variant.width, variant.height).pipe(writeStream).on("finish", resolve).on("error", reject)
+  );
 };
 
 export const downloadThemeImage = async (image: Image) => {

@@ -1,6 +1,7 @@
 export const config = {
   port: process.env.PORT || 4000,
   env: process.env.NODE_ENV || "development",
+  isProduction: process.env.NODE_ENV === "production",
   appName: "Odin",
   secret: process.env.SECRET,
   redis: process.env.REDIS,
@@ -17,4 +18,6 @@ export const config = {
   },
   imageWorkers: Number(process.env.IMAGE_WORKER_COUNT) || 1,
   scrappingWorkers: Number(process.env.SCRAPPER_WORKER_COUNT) || 1,
+  googleCloudKeyFile: process.env.GOOGLE_CLOUD_KEY_FILE,
+  googleCloudBucket: "digthemes",
 };
