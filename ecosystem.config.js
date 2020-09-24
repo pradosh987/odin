@@ -10,16 +10,6 @@ module.exports = {
         NODE_ENV: "production",
       },
     },
-    {
-      script: "./dist/src/workers/worker.js",
-      watch: false,
-      env: {
-        NODE_ENV: "development",
-      },
-      env_production: {
-        NODE_ENV: "production",
-      },
-    },
   ],
 
   // deploy: {
